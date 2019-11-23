@@ -1,5 +1,5 @@
 # import plotly.graph_objects as go
-
+import plotly as plotly
 import plotly.plotly as py
 from plotly import graph_objs as go
 
@@ -103,31 +103,33 @@ for i in range(len(weekno)):
 # print(tickmonths)
 # print(tickmonthname)
 
-trace = go.Heatmap(z=[[1, 20, 30],
-                      [20, 1, 60],
-                      [30, 60, 1]])
-data=[trace]
+# trace = go.Heatmap(z=[[1, 20, 30, 50, 1], [20, 1, 60, 80, 30], [30, 60, 1, -10, 20]],
+#                    x=['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+#                    y=['Morning', 'Afternoon', 'Evening'])
+# data=[trace]
+# py.iplot(data, filename='labelled-heatmap')
 
 
-fig = go.Figure(data=go.Heatmap(
-        z=z,
-        x=weekno,
-        y=weekdays,
-        # hovertemplate = 'Date: {x,y}',
-        colorscale='Viridis'))
+# fig = go.Figure(data=go.Heatmap(
+#         z=z,
+#         x=weekno,
+#         y=weekdays,
+#         # hovertemplate = 'Date: {x,y}',
+#         colorscale='Viridis'))
         # colorscale ='RdBu'))
-data = [
-    go.Heatmap(
-        x = weekno,
-        y = weekdays,
-        z=z,
-        text = text,
-        # hoverinfo="text",
-        hovertemplate='Week: %{x}<br>Day: %{y}<br>Leads: %{z}<br>Date: %{text}<extra></extra>',
-        xgap=3, # this
-        ygap=3, # and this is used to make the grid-like apperance
-    )
-]
+# data = [
+#     go.Heatmap(
+#         x = weekno,
+#         y = weekdays,
+#         z=z,
+#         text = text,
+#         type = 'heatmap',
+#         # hoverinfo="text",
+#         # hovertemplate='Week: %{x}<br>Day: %{y}<br>Leads: %{z}<br>Date: %{text}<extra></extra>',
+#         # xgap=3, # this
+#         # ygap=3, # and this is used to make the grid-like apperance
+#     )
+# ]
 layout = go.Layout(
     height=600,
     yaxis=dict(
@@ -148,9 +150,37 @@ layout = go.Layout(
     ),
 )
 
+data = [
+    go.Heatmap(
+        z=z,
+        x=weekno,
+        y=weekdays,
+        colorscale='Viridis',
+        text = text,
+        # type = 'heatmap',
+        # hoverinfo="text",
+        # hovertemplate='Week: %{x}<br>Day: %{y}<br>Leads: %{z}<br>Date: %{text}<extra></extra>',
+        xgap=3, # this
+        ygap=3, # and this is used to make the grid-like apperance
+    )
+]
+
+# layout = go.Layout(
+#     title='total leads',
+#     xaxis = dict(ticks='', nticks=36),
+#     yaxis = dict(ticks='' )
+# )
+
+
 fig = go.Figure(data=data, layout=layout)
-fig.update_layout(
-    title='Total leads per day')
-fig.write_html('heatmap.html')
+plotly.offline.plot(fig, filename='datetime-heatmap')
+# py.iplot(fig, filename='datetime-heatmap')
+# fig.show(renderer="png", width=800, height=300)
+
+
+# fig = go.Figure(data=data, layout=layout)
+# fig.update_layout(
+#     title='Total leads per day')
+# fig.write_html('heatmap.html')
 # fig.write_html('heatmap.html', auto_open=True)
 # fig.show()
