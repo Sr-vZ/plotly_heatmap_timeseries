@@ -37,7 +37,7 @@ end_date = data['Days in Date'].max()
 start_date = end_date - pd.offsets.MonthBegin(3)
 
 # flitering data based on latest date on the dataset and 3 months back
-mask = (data['Days in Date'] > start_date) & (data['Days in Date'] <= end_date)
+mask = (data['Days in Date'] >= start_date) & (data['Days in Date'] <= end_date)
 
 data = data.loc[mask]
 
@@ -58,7 +58,8 @@ weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 z = []
 w = []
 z = []
-w = []
+w = ['','','','','','','']
+# w = [0,0,0,0,0,0,0]
 d = []
 weekno = []
 weekmon = []
@@ -66,22 +67,101 @@ subdates = []
 text = []
 tickmonths = []
 
+
 data = data[data['month']==9]
-# transforming flat data to 2d Array
+print(len(data['day_of_week']))
+print(data['weekno'].unique())
+i = 0
 for index in data.index:
+    i=i+1
     if data['day_of_week'][index] == "Sunday":
         d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
-        w.append(data['Total Leads'][index])
+        w[6] = data['Total Leads'][index]
         z.append(w)
-        subdates.append(d)
-        w = []
-        text.append(d)
+        # w = [0,0,0,0,0,0,0]
+        w = ['','','','','','','']
         weekno.append(data['weekno'][index])
         weekmon.append(data['month'][index])
+        subdates.append(d)        
+        text.append(d)
         d = []
-    else:
-        w.append(data['Total Leads'][index])
+    elif data['day_of_week'][index] == "Monday":
+        w[0] = data['Total Leads'][index]
         d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
+    elif data['day_of_week'][index] == "Tuesday":
+        w[1] = data['Total Leads'][index]
+        d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
+    elif data['day_of_week'][index] == "Wednesday":
+        w[2] = data['Total Leads'][index]
+        d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
+    elif data['day_of_week'][index] == "Thursday":
+        w[3] = data['Total Leads'][index]
+        d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
+    elif data['day_of_week'][index] == "Friday":
+        w[4] = data['Total Leads'][index]
+        d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
+    elif data['day_of_week'][index] == "Saturday":
+        w[5] = data['Total Leads'][index]
+        d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
+    elif i >= len(data['Total Leads']):
+        z.append(w)
+    
+
+    # for week in data['weekno'].unique():
+    #     z.append(w)
+    #     w = [0,0,0,0,0,0,0]
+    #     weekno.append(data['weekno'][index])
+    #     weekmon.append(data['month'][index])
+    #     subdates.append(d)        
+    #     text.append(d)
+    #     d = []
+
+
+# for index in data.index:
+#     if data['day_of_week'][index] == "Sunday":
+#         d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
+#         w[6] = data['Total Leads'][index]
+#         z.append(w)
+#         subdates.append(d)
+#         w = [0,0,0,0,0,0,0]
+#         text.append(d)
+#         weekno.append(data['weekno'][index])
+#         weekmon.append(data['month'][index])
+#         d = []
+#     elif data['day_of_week'][index] == "Monday":
+#         w[0] = data['Total Leads'][index]
+#         d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
+#     elif data['day_of_week'][index] == "Tuesday":
+#         w[1] = data['Total Leads'][index]
+#         d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
+#     elif data['day_of_week'][index] == "Wednesday":
+#         w[2] = data['Total Leads'][index]
+#         d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
+#     elif data['day_of_week'][index] == "Thursday":
+#         w[3] = data['Total Leads'][index]
+#         d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
+#     elif data['day_of_week'][index] == "Friday":
+#         w[4] = data['Total Leads'][index]
+#         d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
+#     elif data['day_of_week'][index] == "Saturday":
+#         w[5] = data['Total Leads'][index]
+#         d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
+
+# transforming flat data to 2d Array
+# for index in data.index:
+#     if data['day_of_week'][index] == "Sunday":
+#         d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
+#         w.append(data['Total Leads'][index])
+#         z.append(w)
+#         subdates.append(d)
+#         w = []
+#         text.append(d)
+#         weekno.append(data['weekno'][index])
+#         weekmon.append(data['month'][index])
+#         d = []
+#     else:
+#         w.append(data['Total Leads'][index])
+#         d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
 
 print(data)
 print(z)
@@ -156,8 +236,8 @@ layout = go.Layout(
 data = [
     go.Heatmap(
         z=z,
-        x=weekno,
-        y=weekdays,
+        x=weekdays,
+        y=weekno,
         colorscale='Viridis',
         text = text,
         # type = 'heatmap',
