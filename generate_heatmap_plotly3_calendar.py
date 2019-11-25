@@ -71,6 +71,7 @@ tickmonths = []
 data = data[data['month']==9]
 print(len(data['day_of_week']))
 print(data['weekno'].unique())
+# print(data['Days in Date'].dt.day)
 i = 0
 for index in data.index:
     i=i+1
@@ -103,8 +104,7 @@ for index in data.index:
     elif data['day_of_week'][index] == "Saturday":
         w[5] = data['Total Leads'][index]
         d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
-    elif i >= len(data['Total Leads']):
-        z.append(w)
+    elif 
     
 
     # for week in data['weekno'].unique():
@@ -172,7 +172,7 @@ text = np.transpose(text)
 # print(weekno)
 # print(weekmon)
 
-
+z = z[::-1]
 tickmonthname = []
 months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 for i in range(len(weekno)):
@@ -227,8 +227,8 @@ layout = go.Layout(
         showline = True,
         gridwidth = 2,
         tickmode = 'array',
-        ticktext = tickmonthname,
-        tickvals= tickmonths,
+        # ticktext = tickmonthname,
+        # tickvals= tickmonths,
         # title="Months"
     ),
 )
