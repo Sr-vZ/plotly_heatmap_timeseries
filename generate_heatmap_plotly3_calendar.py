@@ -183,23 +183,139 @@ def get_heatmap_data(monthdata,monthname):
         xgap=3, # this
         ygap=3, # and this is used to make the grid-like apperance
     )
-    annotations = go.Annotations()
-    a = go.Annotations()
-    for n, row in enumerate(z):
-        for m, val in enumerate(row):
-            annotations.append(go.Annotation(text=str(z_text[n][m]), x=weekdays[m], y=weekno[n],xref='x1', yref='y1', showarrow=False))
+    # annotations = go.Annotations()
+    # a = go.Annotations()
+    # for n, row in enumerate(z):
+    #     for m, val in enumerate(row):
+    #         annotations.append(go.Annotation(text=str(z_text[n][m]), x=weekdays[m], y=weekno[n],xref='x1', yref='y1', showarrow=False))
             # a.append(go.Annotation(text=str(z_text[n][m]), x=weekdays[m], y=weekno[n],xref='x1', yref='y1', showarrow=False))
         # annotations.append(a)
-    return trace, annotations
+    return trace
+
+
+def get_ff_heatmap_data(monthdata,monthname):
+    data = monthdata
+    w = [0,0,0,0,0,0,0]
+    # w = ['','','','','','','']
+    w_text = ['','','','','','','']
+    d = ['','','','','','','']
+    z = []
+    z_text = []
+    text = []
+    weekno = []
+    weekmon = []
+    for index in data.index:       
+        if data['day_of_week'][index] == "Sunday":
+            # d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
+            d[6] = data['Days in Date'][index].strftime('%m-%d-%Y')
+            w[6] = data['Total Leads'][index]
+            w_text[6] = data['Days in Date'][index].strftime('%d')
+            z_text.append(w_text)
+            z.append(w)
+            w = [0,0,0,0,0,0,0]
+            # w = ['','','','','','','']
+            weekno.append(data['weekno'][index])
+            weekmon.append(data['month'][index])
+            subdates.append(d)        
+            text.append(d)
+            d = ['','','','','','','']
+        elif data['day_of_week'][index] == "Monday":
+            w[0] = data['Total Leads'][index]
+            d[0] = data['Days in Date'][index].strftime('%m-%d-%Y')
+            w_text[0] = data['Days in Date'][index].strftime('%d')
+            if data['Days in Date'][index] == data['Days in Date'].iat[-1]:
+                z.append(w)
+                text.append(d)
+                z_text.append(w_text)
+                weekno.append(data['weekno'][index])
+                weekmon.append(data['month'][index])
+        elif data['day_of_week'][index] == "Tuesday":
+            w[1] = data['Total Leads'][index]
+            d[1] = data['Days in Date'][index].strftime('%m-%d-%Y')
+            w_text[1] = data['Days in Date'][index].strftime('%d')
+            if data['Days in Date'][index] == data['Days in Date'].iat[-1]:
+                z.append(w)
+                text.append(d)
+                z_text.append(w_text)
+                weekno.append(data['weekno'][index])
+                weekmon.append(data['month'][index])
+        elif data['day_of_week'][index] == "Wednesday":
+            w[2] = data['Total Leads'][index]
+            d[2] = data['Days in Date'][index].strftime('%m-%d-%Y')
+            w_text[2] = data['Days in Date'][index].strftime('%d')
+            if data['Days in Date'][index] == data['Days in Date'].iat[-1]:
+                z.append(w)
+                text.append(d)
+                z_text.append(w_text)
+                weekno.append(data['weekno'][index])
+                weekmon.append(data['month'][index])
+        elif data['day_of_week'][index] == "Thursday":
+            w[3] = data['Total Leads'][index]
+            d[3] = data['Days in Date'][index].strftime('%m-%d-%Y')
+            w_text[3] = data['Days in Date'][index].strftime('%d')
+            if data['Days in Date'][index] == data['Days in Date'].iat[-1]:
+                z.append(w)
+                text.append(d)
+                z_text.append(w_text)
+                weekno.append(data['weekno'][index])
+                weekmon.append(data['month'][index])
+        elif data['day_of_week'][index] == "Friday":
+            w[4] = data['Total Leads'][index]
+            d[4] = data['Days in Date'][index].strftime('%m-%d-%Y')
+            w_text[4] = data['Days in Date'][index].strftime('%d')
+            if data['Days in Date'][index] == data['Days in Date'].iat[-1]:
+                z.append(w)
+                text.append(d)
+                z_text.append(w_text)
+                weekno.append(data['weekno'][index])
+                weekmon.append(data['month'][index])
+        elif data['day_of_week'][index] == "Saturday":
+            w[5] = data['Total Leads'][index]
+            d[5] = data['Days in Date'][index].strftime('%m-%d-%Y')
+            w_text[5] = data['Days in Date'][index].strftime('%d')
+            if data['Days in Date'][index] == data['Days in Date'].iat[-1]:
+                text.append(d)
+                z.append(w)
+                z_text.append(w_text)
+                weekno.append(data['weekno'][index])
+                weekmon.append(data['month'][index])
+    # z = z[::-1]
+    # text = text[::-1]
+    weekno = weekno[::-1]
+    print(z)
+    print(z_text)
+    print(text)
+    print(weekno)
+    trace = ff.create_annotated_heatmap(
+    # trace = go.Heatmap(
+        z=z,
+        x=weekdays,
+        y=weekno,
+        colorscale='Viridis',
+        text = text,
+        # textposition='center',
+        annotation_text=z_text,
+        zmin=1,
+        name = monthname,
+        # type = 'heatmap',
+        # hoverinfo="text",
+        # hovertemplate='Week: %{x}<br>Day: %{y}<br>Leads: %{z}<br>Date: %{text}<extra></extra>',
+        xgap=3, # this
+        ygap=3, # and this is used to make the grid-like apperance
+    )
+    return trace
+
+
 
 months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 trace = []
 anno = []
 plotTitle = []
 for m in last3months:
-    t,a = get_heatmap_data(data[data['month']==m],months[m])
+    t = get_heatmap_data(data[data['month']==m],months[m])
+    # t = get_ff_heatmap_data(data[data['month']==m],months[m])
     trace.append(t)
-    anno.append(a)
+    # anno.append(a)
     plotTitle.append(months[m])
 
 print(plotTitle)
@@ -355,16 +471,16 @@ i = 0
 # print(weekno)
 # print(weekmon)
 
-z = z[::-1]
-tickmonthname = []
+# z = z[::-1]
+# tickmonthname = []
 
-for i in range(len(weekno)):
-    if i>0 and weekmon[i] != weekmon[i-1]:
-        tickmonths.append(weekno[i])
-        tickmonthname.append(months[weekmon[i]-1])
-    if i==0:
-        tickmonths.append(weekno[0])
-        tickmonthname.append(months[weekmon[i]-1])
+# for i in range(len(weekno)):
+#     if i>0 and weekmon[i] != weekmon[i-1]:
+#         tickmonths.append(weekno[i])
+#         tickmonthname.append(months[weekmon[i]-1])
+#     if i==0:
+#         tickmonths.append(weekno[0])
+#         tickmonthname.append(months[weekmon[i]-1])
 
 # print(tickmonths)
 # print(tickmonthname)
@@ -416,84 +532,6 @@ for i in range(len(weekno)):
 #     ),
 # )
 
-# layout = go.Layout(
-#     height=600,
-#     yaxis1=dict(
-#         showline=True,
-#         tickmode="array",
-#         # ticktext= weekdays,
-#         # tickvals=[0,1,2,3,4,5,6],
-#         gridwidth = 2,
-#         # title="Weekdays"
-#     ),
-#     xaxis1=dict(
-#         showline = True,
-#         gridwidth = 2,
-#         tickmode = 'array',
-#         # ticktext = tickmonthname,
-#         # tickvals= tickmonths,
-#         # title="Months"
-#     ),
-#     yaxis2=dict(
-#         showline=True,
-#         tickmode="array",
-#         # ticktext= weekdays,
-#         # tickvals=[0,1,2,3,4,5,6],
-#         gridwidth = 2,
-#         # title="Weekdays"
-#     ),
-#     xaxis2=dict(
-#         showline = True,
-#         gridwidth = 2,
-#         tickmode = 'array',
-#         # ticktext = tickmonthname,
-#         # tickvals= tickmonths,
-#         # title="Months"
-#     ),
-#     yaxis3=dict(
-#         showline=True,
-#         tickmode="array",
-#         # ticktext= weekdays,
-#         # tickvals=[0,1,2,3,4,5,6],
-#         gridwidth = 2,
-#         # title="Weekdays"
-#     ),
-#     xaxis3=dict(
-#         showline = True,
-#         gridwidth = 2,
-#         tickmode = 'array',
-#         # ticktext = tickmonthname,
-#         # tickvals= tickmonths,
-#         # title="Months"
-#     ),
-# )
-
-# layout = {
-#   "title": "heatmap subplots", 
-#   "width": 800, 
-#   "height": 600, 
-#   "xaxis1": {
-#     # "anchor": "y1", 
-#     # "domain": [0.0, 0.45],
-#     # "position": "top"
-#     tickmode:"array",
-#     ticktext: weekdays,
-#   }, 
-#   "xaxis2": {
-#     "anchor": "y2", 
-#     "domain": [0.55, 1.0], 
-#     "position": "top"
-#   }, 
-#   "yaxis1": {
-#     "title": "y-axis", 
-#     "anchor": "x1", 
-#     "domain": [0.0, 1.0]
-#   }, 
-#   "yaxis2": {
-#     "anchor": "x2", 
-#     "domain": [0.0, 1.0]
-#   }
-# }
 
 # data = [
 #     go.Heatmap(
@@ -528,7 +566,18 @@ for t in trace:
     fig['layout']['yaxis'+str(i)].update(showticklabels=False)
     # fig['layout'].update(annotations)
     i=i+1
-print(fig)
+# fig = go.Figure()
+# fig.add_traces([fig1.data[0], fig2.data[0]])
+# i=1
+# print(trace[0].data[0])
+# fig.add_trace(trace[0].data[0])
+# fig.add_traces([trace[0].data,trace[1].data,trace[2].data])
+# for t in trace:
+#     fig.add_traces(t)
+#     fig['layout']['yaxis'+str(i)].update(showticklabels=False)
+#     # fig['layout'].update(annotations)
+#     i=i+1
+# print(fig)
 # fig.update_layout(
 #     yaxis1 = dict(showticklabels=False),
 #     yaxis2 = dict(showticklabels=False),

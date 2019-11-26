@@ -1,0 +1,127 @@
+def get_heatmap_data(monthdata,monthname):
+    data = monthdata
+    w = ['','','','','','','']
+    w_text = ['','','','','','','']
+    d = ['','','','','','','']
+    z = []
+    z_text = []
+    text = []
+    weekno = []
+    weekmon = []
+    for index in data.index:       
+        if data['day_of_week'][index] == "Sunday":
+            # d.append(data['date'][index].strftime('%m-%d-%Y'))
+            d[6] = data['date'][index].strftime('%m-%d-%Y')
+            w[6] = data['Revenue'][index]
+            w_text[6] = data['date'][index].strftime('%d')
+            z_text.append(w_text)
+            z.append(w)
+            # w = [0,0,0,0,0,0,0]
+            w = ['','','','','','','']
+            weekno.append(data['weekno'][index])
+            weekmon.append(data['month'][index])
+            subdates.append(d)        
+            text.append(d)
+            d = ['','','','','','','']
+        elif data['day_of_week'][index] == "Monday":
+            w[0] = data['Revenue'][index]
+            d[0] = data['date'][index].strftime('%m-%d-%Y')
+            w_text[0] = data['date'][index].strftime('%d')
+            if data['date'][index] == data['date'].iat[-1]:
+                z.append(w)
+                text.append(d)
+                z_text.append(w_text)
+                weekno.append(data['weekno'][index])
+                weekmon.append(data['month'][index])
+        elif data['day_of_week'][index] == "Tuesday":
+            w[1] = data['Revenue'][index]
+            d[1] = data['date'][index].strftime('%m-%d-%Y')
+            w_text[1] = data['date'][index].strftime('%d')
+            if data['date'][index] == data['date'].iat[-1]:
+                z.append(w)
+                text.append(d)
+                z_text.append(w_text)
+                weekno.append(data['weekno'][index])
+                weekmon.append(data['month'][index])
+        elif data['day_of_week'][index] == "Wednesday":
+            w[2] = data['Revenue'][index]
+            d[2] = data['date'][index].strftime('%m-%d-%Y')
+            w_text[2] = data['date'][index].strftime('%d')
+            if data['date'][index] == data['date'].iat[-1]:
+                z.append(w)
+                text.append(d)
+                z_text.append(w_text)
+                weekno.append(data['weekno'][index])
+                weekmon.append(data['month'][index])
+        elif data['day_of_week'][index] == "Thursday":
+            w[3] = data['Revenue'][index]
+            d[3] = data['date'][index].strftime('%m-%d-%Y')
+            w_text[3] = data['date'][index].strftime('%d')
+            if data['date'][index] == data['date'].iat[-1]:
+                z.append(w)
+                text.append(d)
+                z_text.append(w_text)
+                weekno.append(data['weekno'][index])
+                weekmon.append(data['month'][index])
+        elif data['day_of_week'][index] == "Friday":
+            w[4] = data['Revenue'][index]
+            d[4] = data['date'][index].strftime('%m-%d-%Y')
+            w_text[4] = data['date'][index].strftime('%d')
+            if data['date'][index] == data['date'].iat[-1]:
+                z.append(w)
+                text.append(d)
+                z_text.append(w_text)
+                weekno.append(data['weekno'][index])
+                weekmon.append(data['month'][index])
+        elif data['day_of_week'][index] == "Saturday":
+            w[5] = data['Revenue'][index]
+            d[5] = data['date'][index].strftime('%m-%d-%Y')
+            w_text[5] = data['date'][index].strftime('%d')
+            if data['date'][index] == data['date'].iat[-1]:
+                text.append(d)
+                z.append(w)
+                z_text.append(w_text)
+                weekno.append(data['weekno'][index])
+                weekmon.append(data['month'][index])
+    # z = z[::-1]
+    # text = text[::-1]
+    weekno = weekno[::-1]
+    print(z)
+    print(text)
+    print(weekno)
+    # trace = ff.create_annotated_heatmap(
+    trace = go.Heatmap(
+        z=z,
+        x=weekdays,
+        y=weekno,
+        colorscale='Viridis',
+        text = text,
+        # textposition='center',
+        # annotation_text=z_text,
+        name = monthname,
+        # type = 'heatmap',
+        # hoverinfo="text",
+        # hovertemplate='Week: %{x}<br>Day: %{y}<br>Leads: %{z}<br>Date: %{text}<extra></extra>',
+        xgap=3, # this
+        ygap=3, # and this is used to make the grid-like apperance
+    )
+    return trace
+
+months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+trace = []
+plotTitle = []
+for m in last3months:
+    t = get_heatmap_data(data[data['month']==m],months[m])
+    # t = get_ff_heatmap_data(data[data['month']==m],months[m])
+    trace.append(t)
+    plotTitle.append(months[m])
+
+fig = tools.make_subplots(rows=3, cols=1, subplot_titles=plotTitle)
+i=1
+for t in trace:
+    fig.append_trace(t,i,1)
+    fig['layout']['yaxis'+str(i)].update(showticklabels=False)
+    # fig['layout'].update(annotations)
+    i=i+1
+
+plotly.offline.plot(fig, filename='datetime-heatmap')
