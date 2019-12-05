@@ -86,6 +86,8 @@ def get_heatmap_data(monthdata,monthname):
     text = []
     weekno = []
     weekmon = []
+    weeknonormalized = []
+    i=1
     for index in data.index:       
         if data['day_of_week'][index] == "Sunday":
             # d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
@@ -98,9 +100,11 @@ def get_heatmap_data(monthdata,monthname):
             w = ['','','','','','','']
             weekno.append(data['weekno'][index])
             weekmon.append(data['month'][index])
+            weeknonormalized.append(i)
             subdates.append(d)        
             text.append(d)
             d = ['','','','','','','']
+            i=i+1
         elif data['day_of_week'][index] == "Monday":
             w[0] = data['Total Leads'][index]
             d[0] = data['Days in Date'][index].strftime('%m-%d-%Y')
@@ -111,6 +115,7 @@ def get_heatmap_data(monthdata,monthname):
                 z_text.append(w_text)
                 weekno.append(data['weekno'][index])
                 weekmon.append(data['month'][index])
+                weeknonormalized.append(i)
         elif data['day_of_week'][index] == "Tuesday":
             w[1] = data['Total Leads'][index]
             d[1] = data['Days in Date'][index].strftime('%m-%d-%Y')
@@ -121,6 +126,7 @@ def get_heatmap_data(monthdata,monthname):
                 z_text.append(w_text)
                 weekno.append(data['weekno'][index])
                 weekmon.append(data['month'][index])
+                weeknonormalized.append(i)
         elif data['day_of_week'][index] == "Wednesday":
             w[2] = data['Total Leads'][index]
             d[2] = data['Days in Date'][index].strftime('%m-%d-%Y')
@@ -131,6 +137,7 @@ def get_heatmap_data(monthdata,monthname):
                 z_text.append(w_text)
                 weekno.append(data['weekno'][index])
                 weekmon.append(data['month'][index])
+                weeknonormalized.append(i)
         elif data['day_of_week'][index] == "Thursday":
             w[3] = data['Total Leads'][index]
             d[3] = data['Days in Date'][index].strftime('%m-%d-%Y')
@@ -141,6 +148,7 @@ def get_heatmap_data(monthdata,monthname):
                 z_text.append(w_text)
                 weekno.append(data['weekno'][index])
                 weekmon.append(data['month'][index])
+                weeknonormalized.append(i)
         elif data['day_of_week'][index] == "Friday":
             w[4] = data['Total Leads'][index]
             d[4] = data['Days in Date'][index].strftime('%m-%d-%Y')
@@ -151,6 +159,7 @@ def get_heatmap_data(monthdata,monthname):
                 z_text.append(w_text)
                 weekno.append(data['weekno'][index])
                 weekmon.append(data['month'][index])
+                weeknonormalized.append(i)
         elif data['day_of_week'][index] == "Saturday":
             w[5] = data['Total Leads'][index]
             d[5] = data['Days in Date'][index].strftime('%m-%d-%Y')
@@ -161,9 +170,11 @@ def get_heatmap_data(monthdata,monthname):
                 z_text.append(w_text)
                 weekno.append(data['weekno'][index])
                 weekmon.append(data['month'][index])
+                weeknonormalized.append(i)
     # z = z[::-1]
     # text = text[::-1]
     weekno = weekno[::-1]
+    weeknonormalized = weeknonormalized[::-1]
     print(z)
     print(text)
     print(weekno)
@@ -171,7 +182,7 @@ def get_heatmap_data(monthdata,monthname):
     trace = go.Heatmap(
         z=z,
         x=weekdays,
-        y=weekno,
+        y=weeknonormalized,
         colorscale='Viridis',
         text = text,
         # textposition='center',
@@ -203,7 +214,9 @@ def get_ff_heatmap_data(monthdata,monthname):
     z_text = []
     text = []
     weekno = []
+    weeknonormalized = []
     weekmon = []
+    i=1
     for index in data.index:       
         if data['day_of_week'][index] == "Sunday":
             # d.append(data['Days in Date'][index].strftime('%m-%d-%Y'))
@@ -216,9 +229,11 @@ def get_ff_heatmap_data(monthdata,monthname):
             # w = ['','','','','','','']
             weekno.append(data['weekno'][index])
             weekmon.append(data['month'][index])
+            weeknonormalized.append(i)
             subdates.append(d)        
             text.append(d)
             d = ['','','','','','','']
+            i=i+1
         elif data['day_of_week'][index] == "Monday":
             w[0] = data['Total Leads'][index]
             d[0] = data['Days in Date'][index].strftime('%m-%d-%Y')
@@ -229,6 +244,7 @@ def get_ff_heatmap_data(monthdata,monthname):
                 z_text.append(w_text)
                 weekno.append(data['weekno'][index])
                 weekmon.append(data['month'][index])
+                weeknonormalized.append(i)
         elif data['day_of_week'][index] == "Tuesday":
             w[1] = data['Total Leads'][index]
             d[1] = data['Days in Date'][index].strftime('%m-%d-%Y')
@@ -239,6 +255,7 @@ def get_ff_heatmap_data(monthdata,monthname):
                 z_text.append(w_text)
                 weekno.append(data['weekno'][index])
                 weekmon.append(data['month'][index])
+                weeknonormalized.append(i)
         elif data['day_of_week'][index] == "Wednesday":
             w[2] = data['Total Leads'][index]
             d[2] = data['Days in Date'][index].strftime('%m-%d-%Y')
@@ -249,6 +266,7 @@ def get_ff_heatmap_data(monthdata,monthname):
                 z_text.append(w_text)
                 weekno.append(data['weekno'][index])
                 weekmon.append(data['month'][index])
+                weeknonormalized.append(i)
         elif data['day_of_week'][index] == "Thursday":
             w[3] = data['Total Leads'][index]
             d[3] = data['Days in Date'][index].strftime('%m-%d-%Y')
@@ -259,6 +277,7 @@ def get_ff_heatmap_data(monthdata,monthname):
                 z_text.append(w_text)
                 weekno.append(data['weekno'][index])
                 weekmon.append(data['month'][index])
+                weeknonormalized.append(i)
         elif data['day_of_week'][index] == "Friday":
             w[4] = data['Total Leads'][index]
             d[4] = data['Days in Date'][index].strftime('%m-%d-%Y')
@@ -269,6 +288,7 @@ def get_ff_heatmap_data(monthdata,monthname):
                 z_text.append(w_text)
                 weekno.append(data['weekno'][index])
                 weekmon.append(data['month'][index])
+                weeknonormalized.append(i)
         elif data['day_of_week'][index] == "Saturday":
             w[5] = data['Total Leads'][index]
             d[5] = data['Days in Date'][index].strftime('%m-%d-%Y')
@@ -279,6 +299,7 @@ def get_ff_heatmap_data(monthdata,monthname):
                 z_text.append(w_text)
                 weekno.append(data['weekno'][index])
                 weekmon.append(data['month'][index])
+                weeknonormalized.append(i)
     # z = z[::-1]
     # text = text[::-1]
     weekno = weekno[::-1]
@@ -316,7 +337,7 @@ for m in last3months:
     # t = get_ff_heatmap_data(data[data['month']==m],months[m])
     trace.append(t)
     # anno.append(a)
-    plotTitle.append(months[m])
+    plotTitle.append(months[m-1])
 
 print(plotTitle)
 print(len(anno))
